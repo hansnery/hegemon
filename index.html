@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://code.highcharts.com/maps/highmaps.js"></script>
+  <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
+  <script src="https://code.highcharts.com/maps/modules/accessibility.js"></script>
+  <link rel="stylesheet" href="styles/main.css">
+  <title>Document</title>
+</head>
+<body>
+  <div id="container"></div>
+  <div id="drag"></div>
+  <div id="drop"></div>
+  <script> 
+    (async () => {
+        // Load the base world map
+        const world = await fetch(
+            'https://code.highcharts.com/mapdata/custom/world.topo.json'
+        ).then(response => response.json());
+
+        // Load the map of the Roman provinces
+        const provinces = await fetch(
+            'https://cdn.jsdelivr.net/gh/klokantech/roman-empire@master/data/provinces.geojson'
+        ).then(response => response.json());
+        
+        // Create array that will hold the individual province objects
+        let romanProvinces = [];
+        
+        // Loop through JSON file and add each province object to the array above
+        for(i = 0; i < provinces.features.length; i++){
+            // Filtering provinces
+        // Fetch Roman Empire GEOJSON file
+        let romanProvincesJSON = await fetch(
+            'https://cdn.jsdelivr.net/gh/klokantech/roman-empire@master/data/provinces.geojson'
+        ).then(response => response.json());
+        
+        // Loop through file and filter for province
+        for(i = 0; i < romanProvincesJSON.features.length; i++){
+            romanProvinces.push(romanProvincesJSON.features[i]);
+        }
+        }
+        
+        // Loop through the romanProvinces array and attach 
+        // the head of the GeoJSON file to each object so that is
+        // is readable by the Highcharts API
+        for(i = 0; i < romanProvinces.length; i++){
+            // Load the map of the Roman provinces
+        let map = await fetch(
+            'https://cdn.jsdelivr.net/gh/klokantech/roman-empire@master/data/provinces.geojson'
+            ).then(response => response.json());
+        let province = [];
+        province[9] = romanProvinces[i]
+        map.features = province;
+        map.features = map.features.filter( Boolean ); // Removes undefined objects  inside array
+        romanProvinces[i] = map;
+            }
+        
+        let red = 'rgb(255 0 0 / 1.0)';
+        let yellow = 'rgb(255 255 0 / 1.0)';
+        let green = 'rgb(0 255 0 / 1.0)';
+        let blue = 'rgb(0 0 255 / 1.0)';
+        let colors = [red, yellow, green, blue];
+        
+        // Code to modify coordinates and polygons
+        /*
+        console.log(romanProvinces[7].features[0].geometry.coordinates[0][0]);
+        for(i - 0; i < 10; i++){
+            romanProvinces[7].features[0].geometry.coordinates[0][0].pop();
+        }
+        console.log(romanProvinces[7].features[0].geometry.coordinates[0][0]);
+        */
+        
+        // romanProvinces[7].features[0].properties.name = "";
+        
+        // console.log(romanProvinces[7].features);
+        
+        // Create the province variable and use the  
+        // provinces array to find the coordinates
+        let brittania = 	{
+        name: 'Brtiannia',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[0],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[0].features[0].properties.name
+        }
+        }
+        let lugdunensis = {
+        name: 'Lugdunensis',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[1],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[1].features[0].properties.name
+        }
+        }
+        let belgica = {
+        name: 'Belgica',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[2],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[2].features[0].properties.name
+        }
+        }
+        let germaniaInferior = {
+        name: 'Germania Inferior',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[3],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[3].features[0].properties.name
+        }
+        }
+        let aquitania = {
+        name: 'Aquitania',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[4],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[4].features[0].properties.name
+        }
+        }
+        let germaniaSuperior = {
+        name: 'Germania Superior',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[5],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[5].features[0].properties.name
+        }
+        }
+        let alpesGraiaeEtPoeninae = {
+        name: 'Alpes Graiae et Poeninae',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[6],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[6].features[0].properties.name
+        }
+        }
+        let XI = {
+        name: 'XI',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[7],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[7].features[0].properties.name
+        }
+        }
+        let alpesCottiae = {
+        name: 'Alpes Cottiae',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[8],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[8].features[0].properties.name
+        }
+        }
+        let alpesMaritimae = {
+        name: 'Alpes Maritimae',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[9],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[9].features[0].properties.name
+        }
+        }
+        let IX = {
+        name: 'IX',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[10],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[10].features[0].properties.name
+        }
+        }
+        let narbonensis = {
+        name: 'Narbonensis',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[11],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[11].features[0].properties.name
+        }
+        }
+        let tarraconensis = {
+        name: 'Tarraconensis',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[12],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[12].features[0].properties.name
+        }
+        }
+        let baetica = {
+        name: 'Baetica',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[13],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[13].features[0].properties.name
+        }
+        }
+        let lusitania = {
+        name: 'Lusitania',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[14],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[14].features[0].properties.name
+        }
+        }
+        let raetia = {
+        name: 'Raetia',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[15],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[15].features[0].properties.name
+        }
+        }
+        let noricum = {
+        name: 'Noricum',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[16],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[16].features[0].properties.name
+        }
+        }
+        let X = {
+        name: 'X',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[17],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[17].features[0].properties.name
+        }
+        }
+        let VIII = {
+        name: 'VIII',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[18],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[18].features[0].properties.name
+        }
+        }
+        let VII = {
+        name: 'VII',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[19],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[19].features[0].properties.name
+        }
+        }
+        let VI = {
+        name: 'VI',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[20],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[20].features[0].properties.name
+        }
+        }
+        let IV = {
+        name: 'IV',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[21],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[21].features[0].properties.name
+        }
+        }
+        let V = {
+        name: 'V',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[22],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[22].features[0].properties.name
+        }
+        }
+        let I = {
+        name: 'I',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[23],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[23].features[0].properties.name
+        }
+        }
+        let III = {
+        name: 'III',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[24],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[24].features[0].properties.name
+        }
+        }
+        let sicilia = {
+        name: 'Sicilia',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[25],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[25].features[0].properties.name
+        }
+        }
+        let pannoniaSuperior = {
+        name: 'Pannonia Superior',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[26],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[26].features[0].properties.name
+        }
+        }
+        let pannoniaInferior = {
+        name: 'Pannonia Superior',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[27],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[27].features[0].properties.name
+        }
+        }
+        let dalmatia = {
+        name: 'Dalmatia',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[28],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[28].features[0].properties.name
+        }
+        }
+        let II = {
+        name: 'II',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[29],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[29].features[0].properties.name
+        }
+        }
+        let sardiniaEtCorsica = {
+        name: 'Sardinia et Corsica',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[30],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[30].features[0].properties.name
+        }
+        }
+        let moesiaSuperior = {
+        name: 'Moesia Superior',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[31],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[31].features[0].properties.name
+        }
+        }
+        let dacia = {
+        name: 'Dacia',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[32],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[32].features[0].properties.name
+        }
+        }
+        let moesiaInferior = {
+        name: 'Moesia Inferior',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[33],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[33].features[0].properties.name
+        }
+        }
+        let thracia = {
+        name: 'Thracia',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[34],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[34].features[0].properties.name
+        }
+        }
+        let macedonia = {
+        name: 'Macedonia',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[35],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[35].features[0].properties.name
+        }
+        }
+        let achaia = {
+        name: 'Achaia',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[36],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[36].features[0].properties.name
+        }
+        }
+        let bithyniaEtPontus = {
+        name: 'Bithynia et Pontus',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[37],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[37].features[0].properties.name
+        }
+        }
+        let cilicia = {
+        name: 'Cilicia',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[38],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[38].features[0].properties.name
+        }
+        }
+        let cretaEtCyrene = {
+        name: 'Creta et Cyrene',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[39],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[39].features[0].properties.name
+        }
+        }
+        let cyprus = {
+        name: 'Cyprus',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[40],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[40].features[0].properties.name
+        }
+        }
+        let aegyptus = {
+        name: 'Aegyptus',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[41],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[41].features[0].properties.name
+        }
+        }
+        let arabia = {
+        name: 'Arabia',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[42],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[42].features[0].properties.name
+        }
+        }
+        let iudaea = {
+        name: 'Iudaea',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[43],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[43].features[0].properties.name
+        }
+        }
+        let syria = {
+        name: 'Syria',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[44],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[44].features[0].properties.name
+        }
+        }
+        let africaProconsularis = {
+        name: 'Africa Proconsularis',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[45],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[45].features[0].properties.name
+        }
+        }
+        let numidia = {
+        name: 'Numidia',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[46],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[46].features[0].properties.name
+        }
+        }
+        let mauretaniaCaesariensis = {
+        name: 'Mauretania Caesariensis',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[47],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[47].features[0].properties.name
+        }
+        }
+        let mauretaniaTingitana = {
+        name: 'Mauretania Tingitana',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[48],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[48].features[0].properties.name
+        }
+        }
+        let galatiaEtCappadocia = {
+        name: 'Galatia et Cappadocia',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[49],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[49].features[0].properties.name
+        }
+        }
+        let lyciaEtPamphylia = {
+        name: 'Lycia et Pamphylia',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[50],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[50].features[0].properties.name
+        }
+        }
+        let asia = {
+        name: 'Asia',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[51],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[51].features[0].properties.name
+        }
+        }
+        let armeniaMesopotamia = {
+        name: 'Armenia Mesopotamia',
+        nullColor: colors[Math.floor(Math.random()*colors.length)],
+        mapData: romanProvinces[52],
+        dataLabels: {
+            enabled: true,
+            nullFormat: romanProvinces[52].features[0].properties.name
+        }
+        }
+        let romanEmpireBackground = {
+        name: 'Roman Empire',
+        nullColor: 'rgb(0 0 0 / 0.0)',
+        mapData: provinces,
+        borderColor: '#666',
+        borderWidth: 2,
+        //dataLabels: {
+        //  enabled: true,
+        //  nullFormat: '{point.name}'
+        //},
+        accessibility: {
+            point: {
+            valueDescriptionFormat: '{xDescription}.'
+            }
+        }
+        }
+            
+        // Initialize the chart
+        Highcharts.mapChart('container', {
+
+            chart: {
+                map: provinces,
+                margin: 0
+            },
+                    
+            title: {
+                text: ''
+            },
+                    
+            subtitle: {
+                text: ''
+            },
+                    
+            credits: {
+                mapText: '\u00a9 <a href="https://github.com/klokantech/roman-empire">klokantech</a>'
+            },
+
+            mapNavigation: {
+                enabled: true,
+                buttonOptions: {
+                    verticalAlign: 'bottom',
+                    x: 10
+                }
+            },
+
+            mapView: {
+                padding: ['10%', '2%', '2%', 0]
+            },
+
+            plotOptions: {
+                map: {
+                    showInLegend: false
+                }
+            },
+
+            series: [
+            {
+                name: 'World',
+                data: [],
+                affectsMapView: false,
+                mapData: world,
+                borderColor: '#D3D3D3', //white
+                nullColor: '#D3D3D3', //#808080
+                accessibility: {
+                    exposeAsGroupOnly: true
+                }
+            },
+            
+            brittania,
+            lugdunensis,
+            belgica,
+            germaniaInferior,
+            aquitania,
+            germaniaSuperior,
+            alpesGraiaeEtPoeninae,
+            XI,
+            alpesCottiae,
+            alpesMaritimae,
+            IX,
+            narbonensis,
+            tarraconensis,
+            baetica,
+            lusitania,
+            raetia,
+            noricum,
+            X,
+            VIII,
+            VII,
+            VI,
+            IV,
+            V,
+            I,
+            III,
+            sicilia,
+            pannoniaSuperior,
+            pannoniaInferior,
+            dalmatia,
+            II,
+            sardiniaEtCorsica,
+            moesiaSuperior,
+            dacia,
+            moesiaInferior,
+            thracia,
+            macedonia,
+            achaia,
+            bithyniaEtPontus,
+            cilicia,
+            cretaEtCyrene,
+            cyprus,
+            aegyptus,
+            arabia,
+            iudaea,
+            syria,
+            africaProconsularis,
+            numidia,
+            mauretaniaCaesariensis,
+            mauretaniaTingitana,
+            galatiaEtCappadocia,
+            lyciaEtPamphylia,
+            asia,
+            armeniaMesopotamia,
+            
+            romanEmpireBackground
+            ]
+        });
+    })();
+
+  </script>
+</body>
+</html>
